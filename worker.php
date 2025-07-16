@@ -3,6 +3,7 @@
 use Src\Core\Routes\Routes;
 use Src\Core\Server\ServerRunner;
 
+ini_set('display_errors', 'stderr');
 require __DIR__ . '/vendor/autoload.php';
 
 $app = new ServerRunner();

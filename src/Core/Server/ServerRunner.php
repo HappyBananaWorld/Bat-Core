@@ -6,6 +6,7 @@ use Nyholm\Psr7\Response;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Spiral\RoadRunner\Worker;
 use Spiral\RoadRunner\Http\PSR7Worker;
+use Src\Core\kernel;
 
 class ServerRunner
 {
@@ -14,6 +15,7 @@ class ServerRunner
 
     public function __construct()
     {
+        (new kernel());
         $worker = Worker::create();
         $factory = new Psr17Factory();
         $this->psr7 = new PSR7Worker($worker, $factory, $factory, $factory);
