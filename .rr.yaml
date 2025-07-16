@@ -1,0 +1,11 @@
+version: "3"
+
+server:
+  command: "php worker.php"
+  relay: "pipes"
+
+http:
+  address: "127.0.0.1:8080"
+  pool:
+    numWorkers: 2
+    maxJobs: 1000

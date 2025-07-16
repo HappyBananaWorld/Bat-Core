@@ -1,0 +1,21 @@
+{
+    "name": "batcore/batcore",
+    "autoload": {
+        "psr-4": {
+            "Batcore\\Batcore\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Mr Banana",
+            "email": "sajad.dev.personal@gmail.com"
+        }
+    ],
+    "require": {
+        "spiral/roadrunner": "^2025.1",
+        "nyholm/psr7": "^1.8",
+        "nyholm/psr7-server": "^1.1",
+        "spiral/roadrunner-cli": "^2.7",
+        "spiral/roadrunner-http": "^3.5"
+    }
+}
