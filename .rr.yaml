@@ -9,3 +9,10 @@ http:
   pool:
     numWorkers: 2
     maxJobs: 1000
+
+watch:
+  patterns:
+    - "**/*.php"
+  ignore:
+    - "vendor/**"
+  debounce: 300ms
