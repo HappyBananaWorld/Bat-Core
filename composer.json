@@ -2,7 +2,7 @@
     "name": "batcore/batcore",
     "autoload": {
         "psr-4": {
-            "Batcore\\Batcore\\": "src/"
+    "Src\\": "src/"
         }
     },
     "authors": [
