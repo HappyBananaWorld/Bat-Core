@@ -3,5 +3,7 @@
 
 function registerRoutes($app)
 {
-    $app->get('/', fn() => 'hi');
+    $app->get('/', function () {
+        return "hi";
+    });
 }

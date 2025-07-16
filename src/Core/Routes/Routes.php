@@ -13,7 +13,6 @@ class Routes
 
     public function get(string $path, callable $handler)
     {
-        // $this->routes["GET"][$path] = $handler;
-        $this->serverRunner->routes["GET"][$path] = $handler;
+        $this->serverRunner->addRoute("GET", $path, $handler);
     }
 }

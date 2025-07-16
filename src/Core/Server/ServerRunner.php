@@ -10,13 +10,18 @@ use Spiral\RoadRunner\Http\PSR7Worker;
 class ServerRunner
 {
     private PSR7Worker $psr7;
-    public array $routes = [];
+    private array $routes = [];
 
     public function __construct()
     {
         $worker = Worker::create();
         $factory = new Psr17Factory();
         $this->psr7 = new PSR7Worker($worker, $factory, $factory, $factory);
+    }
+
+    public function addRoute(string $method, string $path, callable $handler): void
+    {
+        $this->routes[strtoupper($method)][$path] = $handler;
     }
 
     public function run(): void
@@ -27,30 +32,30 @@ class ServerRunner
                 if ($request === null) {
                     break;
                 }
-            } catch (\Throwable $e) {
-                $this->psr7->respond(new Response(400));
-                continue;
-            }
 
-            try {
-                $method = $request->getMethod();
-                $path = $request->getUri()->getPath();
+                if (isset($this->routes[$request->getMethod()][$request->getUri()->getPath()])) {
+                    $handler = $this->routes[$request->getMethod()][$request->getUri()->getPath()];
 
-                if (isset($this->routes[$method][$path])) {
-                    $handler = $this->routes[$method][$path];
-                    $response = $handler($request);
+                    ob_start();
+                    $result = $handler($request);
+                    $output = ob_get_clean();
 
-                    if (!$response instanceof Response) {
-                        $response = new Response(200, [], (string) $response);
+                    if ($result instanceof Response) {
+                        $response = $result;
+                    } elseif (is_string($result)) {
+                        $response = new Response(200, [], $output . $result);
+                    } else {
+                        $response = new Response(200, [], $output);
                     }
                 } else {
-                    $response = new Response(404, [], 'not found');
+                    $response = new Response(404, [], 'Not Found');
                 }
-
-                $this->psr7->respond($response);
             } catch (\Throwable $e) {
-                $this->psr7->respond(new Response(500, [], 'server error'));
+                $response = new Response(500, [], 'Internal Server Error');
             }
+
+            $this->psr7->respond($response);
         }
+
     }
 }
