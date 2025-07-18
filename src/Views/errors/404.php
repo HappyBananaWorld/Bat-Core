@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,12 +19,23 @@
       justify-content: center;
       height: 100vh;
       text-align: center;
+      padding: 1rem;
     }
 
     .error-code {
       font-size: 8rem;
       font-weight: 700;
       color: #ff4c4c;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        text-shadow: 0 0 10px #ff4c4c, 0 0 20px rgba(255, 76, 76, 0.3);
+      }
+      50% {
+        text-shadow: 0 0 25px #ff4c4c, 0 0 40px rgba(255, 76, 76, 0.6);
+      }
     }
 
     .message {
@@ -35,7 +47,8 @@
       max-width: 500px;
       margin-top: 1rem;
       font-size: 1rem;
-      opacity: 0.8;
+      opacity: 0.85;
+      line-height: 1.6;
     }
 
     .home-link {
@@ -47,11 +60,13 @@
       border-radius: 10px;
       text-decoration: none;
       font-weight: bold;
-      transition: background 0.3s;
+      box-shadow: 0 4px 10px rgba(255, 76, 76, 0.4);
+      transition: background 0.3s, transform 0.2s ease;
     }
 
     .home-link:hover {
       background-color: #e03b3b;
+      transform: translateY(-2px);
     }
 
     img.logo {
@@ -60,8 +75,8 @@
     }
   </style>
 </head>
+
 <body>
-  <img src="<?= images('logo.jpg')?>" alt="BatCore Logo" class="logo">
   <div class="error-code">404</div>
   <div class="message">Oops! Page Not Found</div>
   <div class="description">
@@ -70,4 +85,5 @@
   </div>
   <a href="/" class="home-link">Back to Home</a>
 </body>
+
 </html>

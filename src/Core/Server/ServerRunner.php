@@ -7,6 +7,7 @@ use Nyholm\Psr7\Factory\Psr17Factory;
 use Spiral\RoadRunner\Worker;
 use Spiral\RoadRunner\Http\PSR7Worker;
 use Src\Core\kernel;
+use Src\Core\Response\Response as CoreResponse;
 
 class ServerRunner
 {
@@ -27,29 +28,29 @@ class ServerRunner
     }
 
     private function getMimeType(string $path): string
-{
-    $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
-    $map = [
-        'css' => 'text/css',
-        'js' => 'application/javascript',
-        'json' => 'application/json',
-        'jpg' => 'image/jpeg',
-        'jpeg' => 'image/jpeg',
-        'png' => 'image/png',
-        'gif' => 'image/gif',
-        'svg' => 'image/svg+xml',
-        'woff' => 'font/woff',
-        'woff2' => 'font/woff2',
-        'ttf' => 'font/ttf',
-        'eot' => 'application/vnd.ms-fontobject',
-        'otf' => 'font/otf',
-        'html' => 'text/html',
-        'htm' => 'text/html',
-        // هر چی دیگه خواستی اضافه کن
-    ];
+    {
+        $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+        $map = [
+            'css' => 'text/css',
+            'js' => 'application/javascript',
+            'json' => 'application/json',
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'png' => 'image/png',
+            'gif' => 'image/gif',
+            'svg' => 'image/svg+xml',
+            'woff' => 'font/woff',
+            'woff2' => 'font/woff2',
+            'ttf' => 'font/ttf',
+            'eot' => 'application/vnd.ms-fontobject',
+            'otf' => 'font/otf',
+            'html' => 'text/html',
+            'htm' => 'text/html',
+            // هر چی دیگه خواستی اضافه کن
+        ];
 
-    return $map[$ext] ?? 'application/octet-stream';
-}
+        return $map[$ext] ?? 'application/octet-stream';
+    }
 
 
     public function run(): void
@@ -98,10 +99,11 @@ class ServerRunner
                         $response = new Response(200, [], $output);
                     }
                 } else {
-                    $response = new Response(404, [], 'Not Found');
+                    // $response = new Response(404, [], 'Not Found');
+                    $response = (new CoreResponse())->view('errors/404');
                 }
             } catch (\Throwable $e) {
-                $response = new Response(500, [], 'Internal Server Error');
+                $response = new Response(500, [], 'Internal Server Error' . $e);
             }
 
             $this->psr7->respond($response);
