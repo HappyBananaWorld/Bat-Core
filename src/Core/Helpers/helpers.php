@@ -1,5 +1,7 @@
 <?php
 
+use Src\Core\Response\Response;
+
 function echoS($path)
 {
     //    echo dirname(__DIR__,3) . "/public/assets/" . $path;
@@ -23,6 +25,11 @@ function public_path(string $relativePath): string
     return dirname(__DIR__, 3) . "/public" . $relativePath;
 }
 
+
+function view($template)
+{
+    return (new Response())->view($template);
+}
 
 // i/* f (!function_exists('assets')) {
 // } */

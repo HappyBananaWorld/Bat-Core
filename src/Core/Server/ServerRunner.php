@@ -88,7 +88,7 @@ class ServerRunner
                     $handler = $this->routes[$request->getMethod()][$path];
 
                     ob_start();
-                    $result = $handler($request);
+                    $result = $handler($request, new CoreResponse());
                     $output = ob_get_clean();
 
                     if ($result instanceof Response) {
@@ -100,7 +100,8 @@ class ServerRunner
                     }
                 } else {
                     // $response = new Response(404, [], 'Not Found');
-                    $response = (new CoreResponse())->view('errors/404');
+                    // $response = (new CoreResponse())->view('errors/404');
+                    $response = view('errors/404');
                 }
             } catch (\Throwable $e) {
                 $response = new Response(500, [], 'Internal Server Error' . $e);
