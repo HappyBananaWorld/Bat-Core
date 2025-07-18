@@ -15,4 +15,11 @@ class Routes
     {
         $this->serverRunner->addRoute("GET", $path, $handler);
     }
+
+    public function post(string $path, callable $handler)
+    {
+        $this->serverRunner->addRoute("POST", $path, $handler);
+    }
+
+    
 }
