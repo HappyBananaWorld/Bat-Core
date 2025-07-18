@@ -26,6 +26,32 @@ class ServerRunner
         $this->routes[strtoupper($method)][$path] = $handler;
     }
 
+    private function getMimeType(string $path): string
+{
+    $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+    $map = [
+        'css' => 'text/css',
+        'js' => 'application/javascript',
+        'json' => 'application/json',
+        'jpg' => 'image/jpeg',
+        'jpeg' => 'image/jpeg',
+        'png' => 'image/png',
+        'gif' => 'image/gif',
+        'svg' => 'image/svg+xml',
+        'woff' => 'font/woff',
+        'woff2' => 'font/woff2',
+        'ttf' => 'font/ttf',
+        'eot' => 'application/vnd.ms-fontobject',
+        'otf' => 'font/otf',
+        'html' => 'text/html',
+        'htm' => 'text/html',
+        // هر چی دیگه خواستی اضافه کن
+    ];
+
+    return $map[$ext] ?? 'application/octet-stream';
+}
+
+
     public function run(): void
     {
         while (true) {
@@ -37,22 +63,24 @@ class ServerRunner
 
                 $path = $request->getUri()->getPath();
 
-                // 1. بررسی فایل‌های استاتیک
-                $staticFile = assets('welcome.css');
-                $response = new Response(200, ['Content-Type' => 'text/plain'], "Static path: " . $staticFile);
-                $this->psr7->respond($response);
-                continue;
+                // find static file
+                $staticFile = public_path($path);
+                /*  $response = new Response(200, ['Content-Type' => 'text/plain'], 
+                 "Static path: " . $staticFile . "|" . "path" . " " . $path);
+                 $this->psr7->respond($response);
+                 continue; */
 
                 // testing fucking server.php
 
                 if (is_file($staticFile) && is_readable($staticFile)) {
                     $content = file_get_contents($staticFile);
-                    $mimeType = mime_content_type($staticFile) ?: 'application/octet-stream';
+                    $mimeType = $this->getMimeType($staticFile);
 
                     $response = new Response(200, ['Content-Type' => $mimeType], $content);
                     $this->psr7->respond($response);
-                    continue; // بریم سراغ درخواست بعدی
+                    continue;
                 }
+
 
                 // 2. اگر فایل استاتیک نبود، بریم سراغ روت‌ها
                 if (isset($this->routes[$request->getMethod()][$path])) {

@@ -5,16 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Welcome to BatCore</title>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
-  <!-- <link rel="stylesheet" href="<?php echo assets("welcome.css") ?>"> -->
-
-  <link rel="stylesheet" href="/assets/welcome.css">
-
-  <style>
-    
-  </style>
+  <link rel="stylesheet" href="<?= assets("welcome.css") ?>">
+   <!-- <link rel="stylesheet" href="/assets/welcome.css"> -->
 </head>
 <body>
-  <img src="logo.jpg" alt="BatCore Logo">
+  <img src="<?= images('logo.jpg')?>" alt="BatCore Logo">
   <div class="title">Welcome to BatCore</div>
   <div class="slogan">Speed is Everything</div>
   <div class="description">
