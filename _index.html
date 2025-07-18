@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dark Idea Keeper</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #121212;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 700px;
+      background-color: #1e1e2f;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      color: #c084fc;
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 10px;
+      border: none;
+      background-color: #2c2c3e;
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 1rem;
+      background: linear-gradient(to right, #7f5af0, #ff79c6);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .notes {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .note {
+      background-color: #2b2b3c;
+      border-radius: 12px;
+      padding: 1rem;
+      position: relative;
+      border-left: 8px solid;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .note:hover {
+      transform: scale(1.02);
+    }
+
+    .note .tag {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 0.3rem 0.7rem;
+      border-radius: 5px;
+      font-size: 0.8rem;
+      color: #fff;
+    }
+
+    .note-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .note-content {
+      font-size: 1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease-in-out;
+      z-index: 999;
+    }
+
+    .modal.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background-color: #1e1e2f;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 600px;
+      width: 90%;
+      box-shadow: 0 0 20px #7f5af0;
+      transform: translateY(-20px);
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      color: #ff79c6;
+      margin-bottom: 1rem;
+    }
+
+    .modal-text {
+      white-space: pre-wrap;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #eee;
+    }
+
+    .close-btn {
+      margin-top: 2rem;
+      display: block;
+      background-color: #ff79c6;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .close-btn:hover {
+      background-color: #ff92d0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌙 Dark Idea Keeper</h1>
+    <div class="form-group">
+      <input type="text" id="noteTitle" placeholder="Title">
+      <textarea id="noteContent" placeholder="Your idea..."></textarea>
+      <select id="noteTag">
+        <option value="#7f5af0">Purple</option>
+        <option value="#ff79c6">Pink</option>
+        <option value="#00bcd4">Blue</option>
+      </select>
+      <button onclick="saveNote()">Save Idea</button>
+    </div>
+    <div class="notes" id="notesContainer"></div>
+  </div>
+
+  <div class="modal" id="noteModal">
+    <div class="modal-content">
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-text" id="modalContent"></div>
+      <button class="close-btn" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    function saveNote() {
+      const title = document.getElementById('noteTitle').value.trim();
+      const content = document.getElementById('noteContent').value.trim();
+      const tag = document.getElementById('noteTag').value;
+
+      if (!title || !content) return;
+
+      const notes = JSON.parse(localStorage.getItem('notes')) || [];
+      notes.unshift({ title, content, tag });
+      localStorage.setItem('notes', JSON.stringify(notes));
+
+      document.getElementById('noteTitle').value = '';
+      document.getElementById('noteContent').value = '';
+      displayNotes();
+    }
+
+    function displayNotes() {
+      const notes = JSON.parse(localStorage.getItem('notes')) || [];
+      const container = document.getElementById('notesContainer');
+      container.innerHTML = notes.map((note, index) => `
+        <div class="note" onclick="openModal(${index})" style="border-color: ${note.tag};">
+          <div class="tag" style="background-color: ${note.tag}33;">Tag</div>
+          <div class="note-title">${note.title}</div>
+          <div class="note-content">${note.content}</div>
+        </div>
+      `).join('');
+    }
+
+    function openModal(index) {
+      const notes = JSON.parse(localStorage.getItem('notes')) || [];
+      const note = notes[index];
+      document.getElementById('modalTitle').textContent = note.title;
+      document.getElementById('modalContent').textContent = note.content;
+      document.getElementById('noteModal').classList.add('show');
+    }
+
+    function closeModal() {
+      document.getElementById('noteModal').classList.remove('show');
+    }
+
+    window.onload = displayNotes;
+  </script>
+</body>
+</html>

@@ -11,10 +11,19 @@ class Response extends AppResponse
         // parent::__construct($status, $headers, $body);
     }
 
-    public function view()
+    public function view($template = 'welcome', $data = [])
     {
+        extract($data);
 
+        ob_start();
+        include dirname(__DIR__, 2) . '/Views/' . $template . '.php';
+        $content = ob_get_clean();
+
+        $headers = ['Content-Type' => 'text/html; charset=utf-8'];
+
+        return new AppResponse(200, $headers, $content);
     }
+
 
     public static function json($status, $body, $headers = [])
     {

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to BatCore</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Fredoka', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #080813, #1a1a2e, #2d2d44, #3d3d5a, #4a4a6a);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2.5rem;
+      position: relative;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 25% 25%, rgba(192, 132, 252, 0.2) 0%, transparent 60%), 
+                  radial-gradient(circle at 75% 75%, rgba(0, 195, 255, 0.15) 0%, transparent 70%),
+                  radial-gradient(circle at 10% 90%, rgba(163, 191, 250, 0.1) 0%, transparent 80%);
+      pointer-events: none;
+      animation: bgPulse 15s infinite ease-in-out;
+      z-index: -1;
+    }
+
+    @keyframes bgPulse {
+      0% { transform: scale(1); opacity: 0.7; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); opacity: 0.7; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(70px) scale(0.9); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-25px) rotate(3deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+
+    img {
+      width: 220px;
+      height: 220px;
+      margin-bottom: 3.5rem;
+      border-radius: 50%;
+      background: radial-gradient(circle, #000 0%, #2d2d44 40%, #4a4a6a 70%, #5a5a7a 100%);
+      object-fit: contain;
+      box-shadow: 0 0 60px rgba(192, 132, 252, 0.6), 0 0 40px rgba(0, 195, 255, 0.5), 0 0 20px rgba(163, 191, 250, 0.4);
+      animation: pulse 4s ease-in-out infinite, float 7s infinite ease-in-out;
+      transition: all 0.5s ease;
+      filter: brightness(1.2);
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 60px rgba(192, 132, 252, 0.6); }
+      50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 80px rgba(192, 132, 252, 0.8), 0 0 40px rgba(0, 195, 255, 0.6); }
+      100% { transform: scale(1); opacity: 0.9; }
+    }
+
+    .title {
+      font-size: 4.5rem;
+      background: linear-gradient(to right, #c084fc, #00c3ff, #a3bffa, #6b46c1, #d53f8c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.8rem;
+      font-weight: 700;
+      text-shadow: 0 8px 25px rgba(0, 195, 255, 0.6), 0 0 20px rgba(192, 132, 252, 0.5), 0 0 10px #a3bffa;
+      animation: titleGlow 4s ease-in-out infinite;
+    }
+
+    @keyframes titleGlow {
+      0% { text-shadow: 0 8px 25px rgba(0, 195, 255, 0.6), 0 0 20px rgba(192, 132, 252, 0.5); }
+      50% { text-shadow: 0 10px 35px rgba(0, 195, 255, 0.8), 0 0 25px rgba(192, 132, 252, 0.7), 0 0 15px #a3bffa; }
+      100% { text-shadow: 0 8px 25px rgba(0, 195, 255, 0.6), 0 0 20px rgba(192, 132, 252, 0.5); }
+    }
+
+    .slogan {
+      font-size: 2.2rem;
+      color: #c084fc;
+      margin-bottom: 3.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      animation: sloganGlow 3.5s ease-in-out infinite;
+      text-shadow: 0 0 15px rgba(192, 132, 252, 0.6), 0 0 10px #00c3ff;
+    }
+
+    @keyframes sloganGlow {
+      0% { text-shadow: 0 0 20px #c084fc; }
+      50% { text-shadow: 0 0 40px #c084fc, 0 0 50px #00c3ff, 0 0 25px #a3bffa; }
+      100% { text-shadow: 0 0 20px #c084fc; }
+    }
+
+    .description {
+      max-width: 950px;
+      font-size: 1.6rem;
+      line-height: 2.3;
+      color: #d1d5db;
+      margin-bottom: 4rem;
+      padding: 2rem 2.5rem;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(192, 132, 252, 0.1);
+      animation: fadeInDescription 2.5s ease-in-out;
+    }
+
+    @keyframes fadeInDescription {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2.5rem;
+      max-width: 1100px;
+      width: 100%;
+      padding: 0 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .feature {
+      background: linear-gradient(135deg, #22223b, #2d2d44, #3d3d5a, #4a4a6a, #5a5a7a);
+      padding: 2rem 3rem;
+      border-radius: 25px;
+      box-shadow: 0 0 40px rgba(138, 43, 226, 0.35), 0 0 25px rgba(0, 195, 255, 0.2), inset 0 0 20px rgba(192, 132, 252, 0.1);
+      transition: all 0.6s ease;
+      text-align: center;
+      border-left: 12px solid #c084fc;
+      transform: perspective(800px) translateZ(0);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .feature::before {
+      content: '';
+      position: absolute;
+      top: -70%;
+      left: -70%;
+      width: 240%;
+      height: 240%;
+      background: radial-gradient(circle, rgba(192, 132, 252, 0.25) 0%, transparent 70%);
+      animation: radialWave 8s infinite ease-in-out;
+      z-index: -1;
+    }
+
+    @keyframes radialWave {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(70%, 70%); }
+    }
+
+    .feature:hover {
+      transform: scale(1.1) translateZ(25px);
+      border-left-color: #00c3ff;
+      box-shadow: 0 0 50px rgba(127, 90, 240, 0.7), 0 0 30px rgba(0, 195, 255, 0.4), inset 0 0 25px rgba(163, 191, 250, 0.2);
+    }
+
+    .feature span {
+      color: #00c3ff;
+      font-weight: 700;
+      font-size: 2.5rem;
+      margin-bottom: 1.2rem;
+      text-shadow: 0 0 10px rgba(0, 195, 255, 0.5), 0 0 5px #a3bffa;
+      animation: iconPulse 2s infinite ease-in-out;
+    }
+
+    @keyframes iconPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .feature p {
+      color: #d1d5db;
+      font-size: 1.3rem;
+      line-height: 1.7;
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <img src="logo.jpg" alt="BatCore Logo">
+  <div class="title">Welcome to BatCore</div>
+  <div class="slogan">Speed is Everything</div>
+  <div class="description">
+    BatCore is a revolutionary PHP micro-framework crafted for developers who crave speed, security, and simplicity. With a sleek, lightweight core, it empowers you to build APIs, tools, and backends with unmatched efficiency and elegance.
+  </div>
+  <div class="features">
+    <div class="feature"><span>🔒</span><p>Encryption of all data for maximum security</p></div>
+    <div class="feature"><span>🛠️</span><p>Infinite helpers for front-end, back-end, and developer convenience</p></div>
+    <div class="feature"><span>⚡</span><p>Ultra-high performance for lightning-fast execution</p></div>
+    <div class="feature"><span>📦</span><p>Custom and simple ORM for easy database handling</p></div>
+    <div class="feature"><span>💾</span><p>Exclusive BatBin database system</p></div>
+    <div class="feature"><span>🛡️</span><p>Advanced security with validation, CSRF, SQLi prevention, and full OWASP compliance</p></div>
+  </div>
+</body>
+</html>
