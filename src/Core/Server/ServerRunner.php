@@ -35,8 +35,28 @@ class ServerRunner
                     break;
                 }
 
-                if (isset($this->routes[$request->getMethod()][$request->getUri()->getPath()])) {
-                    $handler = $this->routes[$request->getMethod()][$request->getUri()->getPath()];
+                $path = $request->getUri()->getPath();
+
+                // 1. بررسی فایل‌های استاتیک
+                $staticFile = assets('welcome.css');
+                $response = new Response(200, ['Content-Type' => 'text/plain'], "Static path: " . $staticFile);
+                $this->psr7->respond($response);
+                continue;
+
+                echo "1";
+
+                if (is_file($staticFile) && is_readable($staticFile)) {
+                    $content = file_get_contents($staticFile);
+                    $mimeType = mime_content_type($staticFile) ?: 'application/octet-stream';
+
+                    $response = new Response(200, ['Content-Type' => $mimeType], $content);
+                    $this->psr7->respond($response);
+                    continue; // بریم سراغ درخواست بعدی
+                }
+
+                // 2. اگر فایل استاتیک نبود، بریم سراغ روت‌ها
+                if (isset($this->routes[$request->getMethod()][$path])) {
+                    $handler = $this->routes[$request->getMethod()][$path];
 
                     ob_start();
                     $result = $handler($request);
@@ -58,6 +78,6 @@ class ServerRunner
 
             $this->psr7->respond($response);
         }
-
     }
+
 }
