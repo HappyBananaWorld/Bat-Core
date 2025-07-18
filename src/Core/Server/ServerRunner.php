@@ -43,7 +43,7 @@ class ServerRunner
                 $this->psr7->respond($response);
                 continue;
 
-                echo "1";
+                // testing fucking server.php
 
                 if (is_file($staticFile) && is_readable($staticFile)) {
                     $content = file_get_contents($staticFile);

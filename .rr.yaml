@@ -6,13 +6,21 @@ server:
 
 http:
   address: "127.0.0.1:8080"
+  cache:
+    enabled: false
+  static:
+    dir: "public"
+    forbid: [".php"]
+    fallback: false
   pool:
-    numWorkers: 2
-    maxJobs: 1000
+    debug: true    # ← enable per-request worker reload
+    num_workers: 1 # optional: limit to a single worker
 
 watch:
   patterns:
     - "**/*.php"
   ignore:
     - "vendor/**"
+    - "storage/**"
+    - "node_modules/**"
   debounce: 300ms
