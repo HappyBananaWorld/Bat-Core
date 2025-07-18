@@ -7,13 +7,13 @@ use Nyholm\Psr7\Factory\Psr17Factory;
 use Spiral\RoadRunner\Worker;
 use Spiral\RoadRunner\Http\PSR7Worker;
 use Src\Core\kernel;
+use Src\Core\Request\Request;
 use Src\Core\Response\Response as CoreResponse;
 
 class ServerRunner
 {
     private PSR7Worker $psr7;
     private array $routes = [];
-
     public function __construct()
     {
         (new kernel());
@@ -57,11 +57,13 @@ class ServerRunner
     {
         while (true) {
             try {
-                $request = $this->psr7->waitRequest();
-                if ($request === null) {
+                $psr7Request = $this->psr7->waitRequest();
+                ;
+                if ($psr7Request === null) {
                     break;
                 }
 
+                $request = Request::fromPsr7($psr7Request);
                 $path = $request->getUri()->getPath();
 
                 // find static file

@@ -9,9 +9,9 @@ function registerRoutes($app)
     $app->post('/', function ($req, $res) {
         $body = (string) $req->getBody();
         $data = json_decode($body, true); // آرایه‌ی PHP
+        print_r($req->input('title'));
 
-
-        return $res->json(200, $data);
+        // return $res->json(200, $data);
         // echo '1';
         // return view('welcome');
     });
