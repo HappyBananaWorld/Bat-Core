@@ -3,13 +3,12 @@
 function registerRoutes($app)
 {
     $app->get('/', function ($req, $res) {
-        return view('welcome');
+        echo $req->ip();
+        // return view('welcome');
     });
 
     $app->post('/', function ($req, $res) {
-        $body = (string) $req->getBody();
-        $data = json_decode($body, true); // آرایه‌ی PHP
-        print_r($req->input('title'));
+        print_r($req->payload());
 
         // return $res->json(200, $data);
         // echo '1';

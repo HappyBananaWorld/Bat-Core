@@ -45,4 +45,14 @@ class Request extends Psr7Request
         // اگر کلید هست ولی مقدارش نیست، مقدار پیش‌فرض رو بده
         return $data[$key] ?? $default;
     }
+
+    public function payload()
+    {
+        return $this->input(); // without any key
+    }
+
+    public function ip()
+    {
+        return $_SERVER['REMOTE_ADDR'];
+    }
 }
