@@ -2,6 +2,7 @@
 
 namespace Src\Core;
 
+use Src\Core\Database\Database;
 use Src\Core\Env\Env;
 
 class kernel
@@ -13,6 +14,7 @@ class kernel
     public function load()
     {
         Env::load();
+        Database::init();
         require_once __DIR__ . "/Helpers/helpers.php";
     }
 }

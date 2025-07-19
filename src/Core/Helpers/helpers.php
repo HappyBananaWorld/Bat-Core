@@ -38,7 +38,7 @@ function route($name)
     return Routes::route($name);
 }
 
-function env($key)
+function conf($key)
 {
     return Env::get($key);
 }

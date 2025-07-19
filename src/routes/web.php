@@ -1,17 +1,13 @@
 <?php
 
 use Src\Core\Env\Env;
+use Src\Models\Config;
 
 function registerRoutes($app)
 {
     $app->get('/', function ($req, $res) {
-        echo $_SERVER['HTTP_USER_AGENT'] . "\n\n";
-
-        $browser = get_browser($_SERVER['HTTP_USER_AGENT']);
-        print_r($browser);
-        
-        Env::get("TEST");
-        // return view('welcome');
+        $data =  Config::get();
+        return $res->json(200,$data);
     });
 
     $app->get('/cat', function ($req, $res) {
