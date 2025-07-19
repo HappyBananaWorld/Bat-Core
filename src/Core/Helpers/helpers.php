@@ -1,5 +1,6 @@
 <?php
 
+use Src\Core\Env\Env;
 use Src\Core\Response\Response;
 use Src\Core\Routes\Routes;
 
@@ -35,6 +36,11 @@ function view($template)
 function route($name)
 {
     return Routes::route($name);
+}
+
+function env($key)
+{
+    return Env::get($key);
 }
 
 // i/* f (!function_exists('assets')) {

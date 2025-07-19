@@ -2,6 +2,8 @@
 
 namespace Src\Core;
 
+use Src\Core\Env\Env;
+
 class kernel
 {
     public function __construct(){
@@ -10,6 +12,7 @@ class kernel
 
     public function load()
     {
+        Env::load();
         require_once __DIR__ . "/Helpers/helpers.php";
     }
 }

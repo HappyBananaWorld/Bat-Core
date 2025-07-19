@@ -1,5 +1,7 @@
 <?php
 
+use Src\Core\Env\Env;
+
 function registerRoutes($app)
 {
     $app->get('/', function ($req, $res) {
@@ -7,14 +9,14 @@ function registerRoutes($app)
 
         $browser = get_browser($_SERVER['HTTP_USER_AGENT']);
         print_r($browser);
-        echo $req->ip();
-        echo route('cat.route');
+        
+        Env::get("TEST");
         // return view('welcome');
     });
 
     $app->get('/cat', function ($req, $res) {
         return "meow";
-    },'cat.route');
+    }, 'cat.route');
 
     $app->post('/', function ($req, $res) {
         print_r($req->payload());
