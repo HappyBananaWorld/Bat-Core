@@ -55,4 +55,14 @@ class Request extends Psr7Request
     {
         return $_SERVER['REMOTE_ADDR'];
     }
+
+    public function userAgent()
+    {
+        return $_SERVER['HTTP_USER_AGENT'];
+    }
+
+    public function headers()
+    {
+        return $this->getHeaders();
+    }
 }
