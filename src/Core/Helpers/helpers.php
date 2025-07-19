@@ -1,6 +1,7 @@
 <?php
 
 use Src\Core\Response\Response;
+use Src\Core\Routes\Routes;
 
 function echoS($path)
 {
@@ -29,6 +30,11 @@ function public_path(string $relativePath): string
 function view($template)
 {
     return (new Response())->view($template);
+}
+
+function route($name)
+{
+    return Routes::route($name);
 }
 
 // i/* f (!function_exists('assets')) {
